@@ -1,33 +1,39 @@
 import sys
+from types import TracebackType
 
-def error_message_detail(error, error_detail:sys):
-    _, _, exc_tb = error_detail.exc_info()
-    file_name = exc_tb.tb_frame.f_code.co_filename
-    error_message = f'Error occured in python script name [{file_name}] line number [{exc_tb.tb_lineno}] error message [{str(error)}]'
+def error_message_detail(
+    error: Exception,
+    exc_info: tuple[type, BaseException, TracebackType|None] | None = None
+) -> str:
+    """
+    Build a helpful one-line error message including filename and lineno.
+    exc_info should be something like sys.exc_info(); if omitted, sys.exc_info() is used.
+    """
+    exc_info = exc_info or sys.exc_info()
+    _, _, tb = exc_info
+    if tb is None:
+        return f"Error message [{error}]"
 
-    return error_message
+    # Walk to the last frame to show the origin
+    while tb.tb_next:
+        tb = tb.tb_next
+    file_name = tb.tb_frame.f_code.co_filename
+    line_no = tb.tb_lineno
+    return f"Error occurred in python script name [{file_name}] line number [{line_no}] error message [{error}]"
 
-    
 class CustomException(Exception):
-    def __init__(self, error_message, error_detail:sys):
+    """
+    Lightweight wrapper that stores a decorated error message.
+    Prefer: `raise CustomException(msg) from original_exc` to preserve traceback.
+    Or: `raise CustomException(e, sys.exc_info())` if you need the built message.
+    """
+    def __init__(
+        self,
+        error_message,
+        exc_info: tuple[type, BaseException, TracebackType|None] | None = None
+    ):
         super().__init__(error_message)
-        self.error_message = error_message_detail(error_message, error_detail)
+        self.error_message = error_message_detail(error_message, exc_info)
 
     def __str__(self) -> str:
         return self.error_message
-
-# def error_message_detail(error):
-#     _, _, exc_tb = sys.exc_info()
-#     file_name = exc_tb.tb_frame.f_code.co_filename
-#     error_message = f'Error occured in python script name [{file_name}] line number [{exc_tb.tb_lineno}] error message [{str(error)}]'
-
-#     return error_message
-
-
-# class CustomException(Exception):
-#     def __init__(self, error_message):
-#         super().__init__(error_message)
-#         self.error_message = error_message_detail(error_message)
-
-#     def __str__(self) -> str:
-#         return self.error_message
