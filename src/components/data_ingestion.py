@@ -1,12 +1,12 @@
-import os
-import sys
 from pathlib import Path
-from src.exception import CustomException
-from src.logger import logging
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+
+from src.components.data_transformation import DataTransformation
+from src.exception import CustomException
+from src.logger import logging
 
 @dataclass
 class DataIngestionConfig:
@@ -19,16 +19,16 @@ class DataIngestion:
         self.ingestion_config = DataIngestionConfig()
     
     def initiate_data_ingestion(self):
-        logging.info('Started data ingestion component')
+        logging.info('Initiated data ingestion component.')
         try:
             df = pd.read_csv('notebook/data/The_Cancer_data_1500_V2.csv')
-            logging.info('Read the dataset as DataFrame')
+            logging.info('Read dataset to DataFrame.')
 
             self.ingestion_config.train_data_path.parent.mkdir(exist_ok=True)
 
             df.to_csv(self.ingestion_config.raw_data_path, index=False)
 
-            logging.info('Train test split initiated')
+            logging.info('Initiated train test split.')
             train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
 
             train_set.to_csv(self.ingestion_config.train_data_path, index=False)
@@ -46,4 +46,7 @@ class DataIngestion:
         
 if __name__ == '__main__':
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_path, test_path = obj.initiate_data_ingestion()
+
+    data_transformation = DataTransformation()
+    data_transformation.initiate_data_transformation(train_path, test_path)
