@@ -20,7 +20,7 @@ class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
 
-    def get_preprocessor(self):
+    def get_preprocessor(self) -> ColumnTransformer:
         cat_features= ['Gender', 'Smoking', 'GeneticRisk', 'CancerHistory']
         num_features = ['Age', 'BMI', 'PhysicalActivity', 'AlcoholIntake']
 
@@ -44,15 +44,14 @@ class DataTransformation:
                 [
                     ('num_pipeline', num_pipeline, num_features),
                     ('cat_pipeline', cat_pipeline, cat_features)
-                ],
-                remainder='passthrough'
+                ]
             )
         except Exception as e:
             raise CustomException(e)
 
         return preprocessor
     
-    def initiate_data_transformation(self, train_path, test_path):
+    def initiate_data_transformation(self, train_path, test_path) -> tuple[np.ndarray, np.ndarray, Path]:
         try:
             logging.info('Initiated data transformation component.')
             train_df = pd.read_csv(train_path)
@@ -88,7 +87,7 @@ class DataTransformation:
 
             save_object(preprocessor, self.data_transformation_config.preprocessor_obj_path)
 
-            logging.info(f'Saved preprocessor object to {self.data_transformation_config.preprocessor_obj_path}')
+            logging.info(f'Saved preprocessor object to {self.data_transformation_config.preprocessor_obj_path}.')
 
             logging.info('Data transformation completed.')
 
