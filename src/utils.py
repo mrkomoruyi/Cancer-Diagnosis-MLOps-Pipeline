@@ -15,6 +15,14 @@ def save_object(obj, path: Path|str):
             
     except Exception as e:
         raise CustomException(e)
+    
+def load_object(path: Path|str):
+    """returns a loaded pickle object from path."""
+    try:
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    except Exception as e:
+        raise CustomException(e)
 
 def get_metric_scores(y_true, y_pred):
     logloss = log_loss(y_true, y_pred)

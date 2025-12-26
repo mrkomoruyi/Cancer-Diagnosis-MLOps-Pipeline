@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Diagnosis Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 48px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #cbd5e1;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23334155' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-badge {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            text-align: center;
+            line-height: 16px;
+            cursor: help;
+        }
+
+        .result-container {
+            margin-top: 32px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-radius: 16px;
+            border-left: 4px solid #667eea;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .result-container h3 {
+            color: #1e293b;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .result-container p {
+            color: #475569;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .prediction-positive {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left-color: #ef4444;
+        }
+
+        .prediction-negative {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left-color: #10b981;
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 32px 24px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .loading .submit-btn::after {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-left: 8px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Cancer Diagnosis Prediction</h1>
+            <p>Enter patient information to predict cancer diagnosis risk</p>
+        </div>
+
+        <!-- <form method="POST" action="/predict" id="predictionForm"> -->
+        <form method="POST" action="{{ url_for('predict') }}" id="predictionForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="age">
+                        Age
+                        <span class="info-badge" title="Patient's age in years">i</span>
+                    </label>
+                    <input type="number" id="age" name="age" min="1" max="120" required placeholder="e.g., 45">
+                    <span class="input-hint">Years (1-120)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">
+                        Gender
+                        <span class="info-badge" title="Patient's biological gender">i</span>
+                    </label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bmi">
+                        BMI
+                        <span class="info-badge" title="Body Mass Index">i</span>
+                    </label>
+                    <input type="number" id="bmi" name="bmi" step="0.01" min="10" max="60" required
+                        placeholder="e.g., 24.5">
+                    <span class="input-hint">Body Mass Index (10-60)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="smoking">
+                        Smoking Status
+                        <span class="info-badge" title="Current smoking status">i</span>
+                    </label>
+                    <select id="smoking" name="smoking" required>
+                        <option value="" disabled selected>Select status</option>
+                        <option value="0">Non-Smoker</option>
+                        <option value="1">Smoker</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="genetic_risk">
+                        Genetic Risk
+                        <span class="info-badge" title="Genetic predisposition level">i</span>
+                    </label>
+                    <select id="genetic_risk" name="genetic_risk" required>
+                        <option value="" disabled selected>Select risk level</option>
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="physical_activity">
+                        Physical Activity
+                        <span class="info-badge" title="Hours per week of physical activity">i</span>
+                    </label>
+                    <input type="number" id="physical_activity" name="physical_activity" step="0.01" min="0" max="20"
+                        required placeholder="e.g., 5.5">
+                    <span class="input-hint">Hours per week (0-20)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="alcohol_intake">
+                        Alcohol Intake
+                        <span class="info-badge" title="Units per week">i</span>
+                    </label>
+                    <input type="number" id="alcohol_intake" name="alcohol_intake" step="0.01" min="0" max="20" required
+                        placeholder="e.g., 3.2">
+                    <span class="input-hint">Units per week (0-20)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="cancer_history">
+                        Cancer History
+                        <span class="info-badge" title="Personal or family history of cancer">i</span>
+                    </label>
+                    <select id="cancer_history" name="cancer_history" required>
+                        <option value="" disabled selected>Select history</option>
+                        <option value="0">No History</option>
+                        <option value="1">Has History</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Get Prediction</button>
+        </form>
+
+        {% if results is defined %}
+        <div class="result-container {% if results > 0.6 %}prediction-positive{% else %}prediction-negative{% endif %}">
+            <h3>Prediction Result</h3>
+            {% if results > 0.6 %}
+            <p><strong>⚠️ Positive Diagnosis:</strong> The model predicts a higher risk of cancer. Please consult with a
+                healthcare professional for further evaluation and testing.</p>
+            {% else %}
+            <p><strong>✅ Negative Diagnosis:</strong> The model predicts a lower risk of cancer. However, regular health
+                check-ups are always recommended.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const form = document.getElementById('predictionForm');
+
+        form.addEventListener('submit', function () {
+            form.classList.add('loading');
+        });
+
+        // Add smooth animations on input focus
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function () {
+                this.parentElement.style.transform = 'scale(1.02)';
+                this.parentElement.style.transition = 'transform 0.2s ease';
+            });
+
+            input.addEventListener('blur', function () {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+
+</html>
