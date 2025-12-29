@@ -56,4 +56,4 @@ if __name__ == '__main__':
 
     model_trainer = ModelTrainer()
     f2score = model_trainer.initiate_model_trainer(train_arr, test_arr)
-    print(f2score)
+    print('F2 score of best model: ', f2score)
