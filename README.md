@@ -40,9 +40,8 @@ python src/pipeline/train_pipeline.py
 
 # 4. Run the web app
 python application.py
-
-# 5. Open http://localhost:5000/predict in your browser.
 ```
+5. Open http://localhost:5000/predict in your browser.
 
 ## Project structure (high level)
 
