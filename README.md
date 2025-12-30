@@ -1,16 +1,21 @@
-# End-to-end cancer diagnosis using Machine learning and Flask
+# End-to-end Cancer Diagnosis using Machine Learning and Flask
+
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
 A complete MLOps pipeline for cancer diagnosis that demonstrates data ingestion, transformation, model training & evaluation, and a Flask-based web UI for inference.
 
+**Dataset:** This project uses the [Cancer Prediction Dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) from Kaggle.
+
 ## Features
 
--   Exploratory data analysis.
--   Data ingestion and preprocessing.
--   Model training and evaluation.
--   Simple Flask web UI for inference.
--   Scripts for reproducible experiments and MLOps steps.
+- **Reproducible Pipeline:** Modular scripts for ingestion, transformation, and training.
+- **Robustness:** Custom exception handling and logging for every step.
+- **Web Interface:** Clean Flask UI for real-time predictions.
+- **Artifact Management:** Systematically saves preprocessors and models for deployment.
+- **Notebook Experiments:** Comprehensive EDA and model experiments.
 
 ## Preview (Flask Web UI)
 
@@ -20,8 +25,8 @@ https://github.com/user-attachments/assets/8d40432d-c4c0-40e3-97ed-a95b05f894ed
 
 ### Prerequisites:
 
--   conda
--   Git (recommended)
+- conda
+- Git
 
 ### Run:
 
@@ -41,19 +46,27 @@ python src/pipeline/train_pipeline.py
 # 4. Run the web app
 python application.py
 ```
-5. Open http://localhost:5000/predict in your browser.
+
+5. Open [http://localhost:5000/predict](http://localhost:5000/predict) in your browser.
 
 ## Project structure (high level)
 
--   notebook/ - raw dataset, EDA and experiments
--   artifacts/ - raw and processed datasets, saved model and preprocessor artifacts
--   src/components - training, evaluation, preprocessing scripts
--   src/pipeline - prediction and training pipeline scripts
--   application.py - Flask web application
--   requirements.txt
+-   **`notebook/`**: contains the raw dataset, exploratory data analysis (EDA), and experimentation notebooks.
+-   **`artifacts/`**: stores generated outputs such as raw/processed data files, the trained `model.pkl`, and preprocessor objects.
+-   **`src/`**: the core source code for the project:
+    -   `components/`: modular scripts for Data Ingestion, Transformation, and Model Training.
+    -   `pipeline/`: orchestration scripts for the Training and Prediction pipelines.
+    -   `utils.py`, `logger.py`, `exception.py`: common utility functions, custom logging, and exception handling logic.
+-   **`templates/`**: HTML files (`index.html`, `home.html`) for the Flask web interface.
+-   **`application.py`**: the main entry point for the Flask web application.
+-   **`setup.py` & `requirements.txt`**: configuration for project dependencies and package installation.
 
 ## Contributing
 
 If you find a bug, please submit an issue using the Issues tab.
 
 If you want to submit a Pull Request, open an issue first and reference the issue in the pull request.
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
