@@ -12,7 +12,9 @@ A complete MLOps pipeline for cancer diagnosis that demonstrates data ingestion,
 -   Simple Flask web UI for inference.
 -   Scripts for reproducible experiments and MLOps steps.
 
-## Preview (Web UI)
+## Preview (Flask Web UI)
+
+https://github.com/user-attachments/assets/8d40432d-c4c0-40e3-97ed-a95b05f894ed
 
 ## How to run this project
 
