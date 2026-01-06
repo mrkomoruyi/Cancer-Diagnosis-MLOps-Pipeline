@@ -211,3 +211,6 @@ __marimo__/
 # CatBoost
 catboost_info/
 **/catboost_info/
+
+# Demo media files
+Web-UI-demo.mp4
