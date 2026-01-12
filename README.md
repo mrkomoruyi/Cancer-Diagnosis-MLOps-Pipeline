@@ -16,10 +16,15 @@ A complete MLOps pipeline for cancer diagnosis that demonstrates data ingestion,
 - **Web Interface:** Clean Flask UI for real-time predictions.
 - **Artifact Management:** Systematically saves preprocessors and models for deployment.
 - **Notebook Experiments:** Comprehensive EDA and model experiments.
+- **AWS Deployment-ready:** Elastic beanstalk configuration file set up.
 
 ## Preview (Flask Web UI)
 
 https://github.com/user-attachments/assets/8d40432d-c4c0-40e3-97ed-a95b05f894ed
+
+## TODO
+
+- Add step-by-step instructions for Elastic beanstalk deployment to README.
 
 ## How to run this project
 
